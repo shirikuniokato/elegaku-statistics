@@ -57,6 +57,7 @@ const getAttendanceInformation = async () => {
 
                 result.push({
                     id:$(el).find('.name > a').attr('href').replace(/\//g, '').replace('profiletopcastCode', ''),
+                    name:$(el).find('.name > a').text().trim().substring(0,$(el).find('.name > a').text().trim().length -2),
                     date:date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
                     start:start,
                     end:end,
