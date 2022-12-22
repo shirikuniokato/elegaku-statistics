@@ -14,6 +14,57 @@
 - Lambda
 - フロントは React で行く（S3 に配置）
 
+### API Gateway
+
+- プロキシ統合
+- ルート
+  - attendance-information ※scan
+    - {id} ※scan
+      - {date} ※query
+    - {ym} ※scan
+  - attendance-information-month ※scan
+    - {ym} ※scan
+      - {id} ※query
+  - girl ※scan
+    - {id} ※query
+
+### Lambda
+
+- batch
+  - update-girl
+  - update-attendance-information
+  - update-attendance-information-month
+- web-api
+  - get-girl
+  - get-attendance-information
+  - get-attendance-information-month
+
+### DynamoDB
+
+- girl
+
+  - id(pk)
+  - name
+  - age
+  - three_size
+  - catch_copy
+  - image
+
+- attendance-information
+
+  - id(pk)
+  - date(sk)
+  - name
+  - start
+  - end
+
+- attendance-information-month
+  - id(pk)
+  - ym(sk)
+  - name
+  - attendanceDays
+  - attendanceTime
+
 ## 実装したいこと
 
 1. 統計情報（１月の出勤状況とか）の表示
