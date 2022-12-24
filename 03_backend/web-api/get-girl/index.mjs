@@ -13,19 +13,18 @@ export const handler = async (event) => {
 
   try {
     switch (event.routeKey) {
-      case 'GET /items/{id}/{date}':
+      case 'GET /girl/{id}':
         body = await dynamo
           .get({
-            TableName: 'attendance-information',
+            TableName: 'girl',
             Key: {
               id: event.pathParameters.id,
-              date: event.pathParameters.date,
             },
           })
           .promise();
         break;
-      case 'GET /items':
-        body = await dynamo.scan({ TableName: 'attendance-information' }).promise();
+      case 'GET /girl':
+        body = await dynamo.scan({ TableName: 'girl' }).promise();
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);

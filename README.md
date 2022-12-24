@@ -20,8 +20,9 @@
 - ルート
   - attendance-information ※scan
     - {id} ※scan
-      - {date} ※query
-    - {ym} ※scan
+      - {ym} ※scan
+    - ym
+      - {ym} ※scan
   - attendance-information-month ※scan
     - {ym} ※scan
       - {id} ※query
@@ -71,23 +72,32 @@
    - 人ごとの出勤状況（上旬は出勤率が高くて、下旬は低いとか）
    - 全体の出勤状況
 2. ログイン機能（Twitter とかの連携で良い）※優先度かなり低い
+3. 出勤予報（過去の出勤状況から解析し、予測する）
 
 ## 表示内容
 
-### ALL
+### 全体
 
 - [グラフ一覧](https://jp.infragistics.com/products/ignite-ui-react/react/components/charts/chart-overview)
 - [オプション一覧](https://www.chartjs.org/docs/latest/api/interfaces/ActiveDataPoint.html)
 
-  - 円グラフ（総出勤時間を人ごとで表示する）
-  - 棒グラフ（総出勤時間を人ごとで表示する）
-  - 折れ線グラフ（縦軸：時間、横軸：日で人ごとの線を引く）
+- 円グラフ（総出勤時間を人ごとで表示する）
+
+- 折れ線グラフ＋縦棒グラフ
+
+  - 日毎の勤務時間合計
+  - 日毎の勤務日数合計
+
+- 円グラフ
+
+  - 月の女の子出勤時間の割合（月の女の子の出勤時間合計/月の出勤時間合計）
+  - 月の女の子出勤日数の割合（月の女の子の出勤日数合計/月の出勤日数合計）
 
 - １番出勤日数が多い人を出す（１～３位くらい出しても良いかも）
 - １番出勤時間が多い人を出す（１～３位くらい出しても良いかも）
 - 前月からの変化を出力（優先度低い）
 
-### 個別
+### 女の子別
 
 ## 画面構成
 
