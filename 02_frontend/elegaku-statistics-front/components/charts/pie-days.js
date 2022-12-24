@@ -1,10 +1,10 @@
 'use client';
 
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-import ChartDataLabels from 'chartjs-plugin-datalabels';
 import Data from '../web-api/month.json';
 
 const PieDays = () => {
@@ -15,12 +15,23 @@ const PieDays = () => {
         label: '出勤日数',
         data: createData(Data),
         borderWidth: 1,
+        datalabels: {
+          color: 'white',
+          formatter: function (value, context) {
+            const label = context.chart.data.labels[context.dataIndex];
+            return `${label}\n${value.toString()}日`;
+          },
+          font: {
+            weight: 'bold',
+          },
+        },
       },
     ],
   };
 
   const options = {
     responsive: true,
+    plugins: [ChartDataLabels],
     plugins: {
       title: {
         display: true,
@@ -32,23 +43,6 @@ const PieDays = () => {
       legend: {
         display: true,
       },
-      datalabels: {
-        color: 'white',
-        formatter: function (value, context) {
-          const label = context.chart.data.labels[context.dataIndex];
-          return `${label}\n${value.toString()}日`;
-        },
-        display: function (context) {
-          var dataset = context.dataset;
-          var count = dataset.data.length;
-          var value = dataset.data[context.dataIndex];
-          return value > count * 1.5;
-        },
-        font: {
-          weight: 'bold',
-        },
-        padding: 6,
-      },
     },
   };
 
@@ -58,7 +52,7 @@ const PieDays = () => {
 
   return (
     <Box style={divStyle} m="auto">
-      <Pie height={300} width={300} data={data} options={options} id="days" />
+      <Pie height={300} width={300} data={data} options={options} id="days" plugins={[ChartDataLabels]} />
     </Box>
   );
 };

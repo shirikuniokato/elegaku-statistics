@@ -4,12 +4,18 @@ import React from 'react';
 import Data from '../web-api/girl.json';
 import { Select, FormControl, FormLabel } from '@chakra-ui/react';
 
-const GirlList = () => {
+const GirlList = (props) => {
+  const change = (e) => {
+    props.setId(e.target.value);
+  };
+
   return (
     <>
       <FormControl>
-        <FormLabel>対象者</FormLabel>
-        <Select placeholder="女の子を選択してください">{craeteOptions(Data)}</Select>
+        <FormLabel>生徒</FormLabel>
+        <Select placeholder="選択してください" onChange={change}>
+          {craeteOptions(Data)}
+        </Select>
       </FormControl>
     </>
   );

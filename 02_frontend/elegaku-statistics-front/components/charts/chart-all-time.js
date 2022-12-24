@@ -1,11 +1,13 @@
 'use client';
 
+import ChartDataLabels from 'chartjs-plugin-datalabels';
+
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import { Line } from 'react-chartjs-2';
 import Data from '../web-api/data.json';
 
-const Chart = () => {
+const ChartAllTime = () => {
   const labels = createLabels('12');
   const graphData = {
     labels: labels,
@@ -14,6 +16,7 @@ const Chart = () => {
 
   const options = {
     responsive: true,
+    plugins: [ChartDataLabels],
     plugins: {
       title: {
         display: true,
@@ -31,7 +34,7 @@ const Chart = () => {
 
   return (
     <Box style={divStyle} m="auto">
-      <Line height={300} width={300} data={graphData} options={options} />
+      <Line height={300} width={300} data={graphData} options={options} plugins={[ChartDataLabels]} />
     </Box>
   );
 };
@@ -58,6 +61,14 @@ const createDatasets = (data) => {
     label: '出勤人数',
     data: dateList,
     borderWidth: 1,
+    datalabels: {
+      formatter: function (value, context) {
+        if (value === 0) return '';
+        return `${value.toString()}人`;
+      },
+      display: 'auto',
+      align: 'top',
+    },
   });
 
   return result;
@@ -71,4 +82,4 @@ const initializeDateList = () => {
   return dateList;
 };
 
-export default Chart;
+export default ChartAllTime;

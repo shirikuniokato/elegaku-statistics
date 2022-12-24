@@ -6,6 +6,11 @@ const theme = extendTheme({
     body: `'Noto Sans JP', sans-serif`,
   },
   components: {
+    Link: {
+      baseStyle: {
+        '&:hover': { textDecoration: 'none' },
+      },
+    },
     // Tabs: {
     //   baseStyle: {},
     //   variants: {

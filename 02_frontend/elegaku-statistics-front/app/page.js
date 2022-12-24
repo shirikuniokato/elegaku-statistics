@@ -18,7 +18,7 @@ export default function Page() {
       <Tabs isFitted variant="line" colorScheme="cyan">
         <TabList>
           <Tab>全体</Tab>
-          <Tab>女の子別</Tab>
+          <Tab>生徒別</Tab>
         </TabList>
         <TabPanels>
           <TabPanel>

@@ -1,8 +1,11 @@
 'use client';
 
 import React from 'react';
-import { Flex, Text, Box, Heading } from '@chakra-ui/react';
+import { Flex, Text, Box, InputRightElement } from '@chakra-ui/react';
 import Data from './web-api/month.json';
+
+import Line from './common/line';
+import Title from './common/title';
 
 const Rank = () => {
   const attendanceDays = Data.Items.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1));
@@ -10,23 +13,22 @@ const Rank = () => {
 
   return (
     <Box>
-      <Heading size="md">出勤日数</Heading>
-      <Box m="1vh" />
-      {/* <Box>{attendanceDays}</Box> */}
+      <Title title="出勤日数" />
       <Box>
-        {attendanceDays.map((item, index) => {
+        {Data.Items.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1)).map((item, index) => {
+          if (item.attendanceDays === 0) return;
           if (index > 4) return;
           return (
             <>
               <Flex key={index} h="5vh">
                 <Box flex="2" align="center" m="auto">
-                  <Text fontSize="lg">{`${index + 1}位`}</Text>
+                  <Text fontSize="md">{`${index + 1}位`}</Text>
                 </Box>
                 <Box flex="5" align="left" m="auto">
-                  <Text fontSize="lg">{item.name}</Text>
+                  <Text fontSize="md">{item.name}</Text>
                 </Box>
                 <Box flex="2" align="right" m="auto">
-                  <Text>{`${item.attendanceDays}日`}</Text>
+                  <Text fontSize="md">{`${item.attendanceDays}日`}</Text>
                 </Box>
               </Flex>
               <Box m="1vh"></Box>
@@ -34,22 +36,24 @@ const Rank = () => {
           );
         })}
       </Box>
-      <Heading size="md">出勤時間</Heading>
-      <Box m="1vh" />
+
+      <Line />
+
+      <Title title="出勤時間" />
       <Box>
-        {attendanceTime.map((item, index) => {
+        {Data.Items.sort((a, b) => (a.attendanceTime < b.attendanceTime ? 1 : -1)).map((item, index) => {
           if (index > 4) return;
           return (
             <>
               <Flex key={index} h="5vh">
                 <Box flex="2" align="center" m="auto">
-                  <Text fontSize="lg">{`${index + 1}位`}</Text>
+                  <Text fontSize="md">{`${index + 1}位`}</Text>
                 </Box>
                 <Box flex="5" align="left" m="auto">
-                  <Text fontSize="lg">{item.name}</Text>
+                  <Text fontSize="md">{item.name}</Text>
                 </Box>
                 <Box flex="2" align="right" m="auto">
-                  <Text>{`${item.attendanceTime}時間`}</Text>
+                  <Text fontSize="md">{`${item.attendanceTime}時間`}</Text>
                 </Box>
               </Flex>
               <Box m="1vh"></Box>
