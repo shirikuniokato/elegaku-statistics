@@ -13,20 +13,49 @@ export const handler = async (event) => {
 
   try {
     switch (event.routeKey) {
-      case 'GET /items/{id}/{date}':
+      case 'GET /attendance-information':
+        body = await dynamo.scan({ TableName: 'attendance-information' }).promise();
+        break;
+      case 'GET /attendance-information/{id}':
         body = await dynamo
-          .get({
+          .query({
             TableName: 'attendance-information',
-            Key: {
-              id: event.pathParameters.id,
-              date: event.pathParameters.date,
+            KeyConditionExpression: 'id = :id',
+            ExpressionAttributeValues: {
+              ':id': event.pathParameters.id,
             },
           })
           .promise();
         break;
-      case 'GET /items':
+      case 'GET /attendance-information/{id}/{ym}':
         body = await dynamo
-          .scan({ TableName: 'attendance-information' })
+          .query(
+            {
+              TableName: 'attendance-information',
+              KeyConditionExpression: 'id = :id',
+              ExpressionAttributeValues: {
+                ':id': event.pathParameters.id,
+              },
+            },
+            (err, data) => {
+              if (err) {
+                throw new Error('データ取得中にエラーが発生しました。');
+              }
+            }
+          )
+          .promise();
+
+        body.Items = body.Items.filter((item) => item.date.startsWith(event.pathParameters.ym));
+        body.Count = body.Items.length;
+        break;
+      case 'GET /attendance-information/ym/{ym}':
+        body = await dynamo
+          .scan({
+            TableName: 'attendance-information',
+            FilterExpression: 'begins_with(#d, :ym)',
+            ExpressionAttributeNames: { '#d': 'date' },
+            ExpressionAttributeValues: { ':ym': event.pathParameters.ym },
+          })
           .promise();
         break;
       default:
