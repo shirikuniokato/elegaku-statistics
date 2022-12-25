@@ -29,20 +29,13 @@ export const handler = async (event) => {
         break;
       case 'GET /attendance-information/{id}/{ym}':
         body = await dynamo
-          .query(
-            {
-              TableName: 'attendance-information',
-              KeyConditionExpression: 'id = :id',
-              ExpressionAttributeValues: {
-                ':id': event.pathParameters.id,
-              },
+          .query({
+            TableName: 'attendance-information',
+            KeyConditionExpression: 'id = :id',
+            ExpressionAttributeValues: {
+              ':id': event.pathParameters.id,
             },
-            (err, data) => {
-              if (err) {
-                throw new Error('データ取得中にエラーが発生しました。');
-              }
-            }
-          )
+          })
           .promise();
 
         body.Items = body.Items.filter((item) => item.date.startsWith(event.pathParameters.ym));

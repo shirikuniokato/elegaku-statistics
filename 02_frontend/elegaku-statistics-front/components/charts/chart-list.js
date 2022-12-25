@@ -13,7 +13,7 @@ import ChartAllTime from './chart-all-time';
 import PieTime from './pie-time';
 import PieDays from './pie-days';
 
-const ChartList = () => {
+const ChartList = (props) => {
   const settings = {
     dots: true,
     infinite: true,

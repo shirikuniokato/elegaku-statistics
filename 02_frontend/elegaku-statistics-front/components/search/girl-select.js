@@ -4,18 +4,26 @@ import React from 'react';
 import Data from '../web-api/girl.json';
 import { Select, FormControl, FormLabel } from '@chakra-ui/react';
 
+const requestUrl = 'https://9gj8mh3669.execute-api.ap-northeast-1.amazonaws.com/items';
+
 const GirlList = (props) => {
   const change = (e) => {
     props.setId(e.target.value);
   };
 
+  console.log('girl-select:start');
+
   return (
     <>
       <FormControl>
         <FormLabel>生徒</FormLabel>
-        <Select placeholder="選択してください" onChange={change}>
-          {craeteOptions(Data)}
-        </Select>
+        {props.girls.Item == undefined ? (
+          <p>データがありません</p>
+        ) : (
+          <Select placeholder="選択してください" onChange={change}>
+            {craeteOptions(props.girls)}
+          </Select>
+        )}
       </FormControl>
     </>
   );
