@@ -6,17 +6,13 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
 
-import Data from '../web-api/month.json';
-
 const PieDays = (props) => {
-  const label = createLabels(Data.Items);
-  const viewData = createData(Data.Items);
   const data = {
-    labels: label,
+    labels: createLabels(props.attendancesMonth),
     datasets: [
       {
         label: '出勤日数',
-        data: viewData,
+        data: createData(props.attendancesMonth),
         borderWidth: 1,
         datalabels: {
           color: 'white',
@@ -28,6 +24,8 @@ const PieDays = (props) => {
             weight: 'bold',
           },
         },
+        backgroundColor: ['rgb(54, 162, 235)', 'rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)'],
+        borderColor: ['rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)'],
       },
     ],
   };
@@ -39,9 +37,6 @@ const PieDays = (props) => {
       title: {
         display: true,
         text: '出勤日数割合',
-      },
-      autocolors: {
-        mode: 'data',
       },
       legend: {
         display: true,
