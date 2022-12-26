@@ -26,7 +26,7 @@ const StatisticsGirl = () => {
       <GirlList setId={setId} girls={girls} />
       <Box m={8} />
       <Line />
-      <GirlInfo id={id} />
+      <GirlInfo id={id} girls={girls} />
     </>
   );
 };

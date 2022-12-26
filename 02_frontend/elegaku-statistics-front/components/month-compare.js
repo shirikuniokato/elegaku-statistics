@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Box, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup } from '@chakra-ui/react';
+import { Box, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup, Skeleton } from '@chakra-ui/react';
 
 import Line from './common/line';
 import Title from './common/title';
@@ -34,14 +34,19 @@ const MonthCompare = (props) => {
       <StatGroup>
         <Stat>
           <StatLabel>出勤日数</StatLabel>
-          <StatNumber>{`${props.attendancesMonthTotal.attendanceDays}日`}</StatNumber>
-          {CompareResult(dayPercent, dayResult)}
+
+          <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+            <StatNumber>{`${props.attendancesMonthTotal.attendanceDays}日`}</StatNumber>
+            {CompareResult(dayPercent, dayResult)}
+          </Skeleton>
         </Stat>
 
         <Stat>
           <StatLabel>出勤時間</StatLabel>
-          <StatNumber>{`${props.attendancesMonthTotal.attendanceTime}時間`}</StatNumber>
-          {CompareResult(timePercent, timeResult)}
+          <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+            <StatNumber>{`${props.attendancesMonthTotal.attendanceTime}時間`}</StatNumber>
+            {CompareResult(timePercent, timeResult)}
+          </Skeleton>
         </Stat>
       </StatGroup>
     </Box>
