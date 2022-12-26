@@ -15,11 +15,6 @@ import MonthCompare from '../month-compare';
 import Rank from '../../components/rank';
 import Line from '../common/line';
 
-// 検証用
-import monthData from '../web-api/month.json';
-
-import { AttendanceContext } from '../../app/page';
-
 const Statistics = () => {
   const [ym, setYm] = useState(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`);
   const [attendanceInformation, setAttendanceInformation] = useState([]);
@@ -27,23 +22,25 @@ const Statistics = () => {
   const [attendanceInformationMonthTotal, setAttendanceInformationMonthTotal] = useState({});
   const [attendanceInformationMonthTotalLast, setAttendanceInformationMonthTotalLast] = useState({});
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   // 初期表示時
   useEffect(() => {
     const request = async () => {
-      const sysDate = new Date();
-      const defaultYm = `${sysDate.getFullYear()}-${sysDate.getMonth() + 1}`;
-
       const responseInformation = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information/ym/${ym}`);
       setAttendanceInformation(responseInformation.data.Items);
-      const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${defaultYm}`);
+      const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${ym}`);
       setAttendanceInformationMonth(responseMonth.data.Items);
 
+      const sysDate = new Date(ym.split('-')[0], ym.split('-')[1] - 1);
       const param = `${sysDate.getFullYear()}-${sysDate.getMonth()}`;
-      const responseMonthTotal = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month-total/${defaultYm}`);
+      const responseMonthTotal = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month-total/${ym}`);
       setAttendanceInformationMonthTotal(responseMonthTotal.data.Item);
-      console.log(param);
       const responseMonthTotalLast = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month-total/${param}`);
       setAttendanceInformationMonthTotalLast(responseMonthTotalLast.data.Item);
+
+      // ロード完了
+      setIsLoaded(true);
     };
     request();
   }, []);
@@ -51,6 +48,8 @@ const Statistics = () => {
   // 対象年月変更時
   useEffect(() => {
     const request = async () => {
+      // ロード中
+      setIsLoaded(false);
       const responseInformation = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information/ym/${ym}`);
       setAttendanceInformation(responseInformation.data.Items);
       const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${ym}`);
@@ -62,6 +61,9 @@ const Statistics = () => {
       setAttendanceInformationMonthTotal(responseMonthTotal.data.Item);
       const responseMonthTotalLast = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month-total/${param}`);
       setAttendanceInformationMonthTotalLast(responseMonthTotalLast.data.Item);
+
+      // ロード完了
+      setIsLoaded(true);
     };
     request();
   }, [ym]);
@@ -72,12 +74,12 @@ const Statistics = () => {
         <MonthList setYm={setYm} />
         <Box mt={8}></Box>
         <Line />
-        <ChartList attendances={attendanceInformation} attendancesMonth={attendanceInformationMonth} />
+        <ChartList isLoaded={isLoaded} ym={ym} attendances={attendanceInformation} attendancesMonth={attendanceInformationMonth} />
         <Box mt={12}></Box>
         <Line />
-        <MonthCompare attendancesMonthTotal={attendanceInformationMonthTotal} attendancesMonthTotalLast={attendanceInformationMonthTotalLast} />
+        <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonthTotal} attendancesMonthTotalLast={attendanceInformationMonthTotalLast} />
         <Line />
-        <Rank attendancesMonth={attendanceInformationMonth} />
+        <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} />
       </Box>
     </>
   );

@@ -9,11 +9,11 @@ import Data from '../web-api/month.json';
 
 const PieTime = (props) => {
   const data = {
-    labels: createLabels(Data.Items),
+    labels: createLabels(props.attendancesMonth),
     datasets: [
       {
         label: '出勤時間',
-        data: createData(Data.Items),
+        data: createData(props.attendancesMonth),
         borderWidth: 1,
         datalabels: {
           color: 'white',
@@ -25,20 +25,19 @@ const PieTime = (props) => {
             weight: 'bold',
           },
         },
+        backgroundColor: ['rgb(54, 162, 235)', 'rgb(255, 99, 132)', 'rgb(255, 159, 64)', 'rgb(255, 205, 86)', 'rgb(75, 192, 192)', 'rgb(153, 102, 255)'],
+        borderColor: ['rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)', 'rgb(255, 255, 255)'],
       },
     ],
   };
 
   const options = {
-    plugins: [ChartDataLabels],
     responsive: true,
+    plugins: [ChartDataLabels],
     plugins: {
       title: {
         display: true,
         text: '出勤時間割合',
-      },
-      autocolors: {
-        mode: 'data',
       },
       legend: {
         display: true,

@@ -1,7 +1,7 @@
 'use client';
 
 // ライブラリ
-import { Box } from '@chakra-ui/react';
+import { Box, Skeleton } from '@chakra-ui/react';
 
 // スライダー関連
 import 'slick-carousel/slick/slick.css';
@@ -25,11 +25,13 @@ const ChartList = (props) => {
   return (
     <>
       <Box>
-        <Slider {...settings}>
-          <PieDays attendancesMonth={props.attendancesMonth} />
-          <PieTime attendancesMonth={props.attendancesMonth} />
-          <ChartAllTime attendances={props.attendanceInformation} />
-        </Slider>
+        <Skeleton isLoaded={props.isLoaded}>
+          <Slider {...settings}>
+            <PieDays attendancesMonth={props.attendancesMonth} />
+            <PieTime attendancesMonth={props.attendancesMonth} />
+            <ChartAllTime attendances={props.attendances} ym={props.ym} />
+          </Slider>
+        </Skeleton>
       </Box>
     </>
   );
