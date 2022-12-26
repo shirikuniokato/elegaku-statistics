@@ -5,15 +5,18 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
+
 import Data from '../web-api/month.json';
 
-const PieDays = () => {
+const PieDays = (props) => {
+  const label = createLabels(Data.Items);
+  const viewData = createData(Data.Items);
   const data = {
-    labels: createLabels(Data),
+    labels: label,
     datasets: [
       {
         label: '出勤日数',
-        data: createData(Data),
+        data: viewData,
         borderWidth: 1,
         datalabels: {
           color: 'white',
@@ -61,7 +64,7 @@ const createLabels = (data) => {
   const result = [];
 
   let count = 0;
-  for (const item of data.Items.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1))) {
+  for (const item of data.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1))) {
     if (item.attendanceDays === 0) continue;
 
     if (count < 5) {
@@ -79,7 +82,7 @@ const createData = (data) => {
   const result = [];
 
   let count = 0;
-  for (const item of data.Items.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1))) {
+  for (const item of data.sort((a, b) => (a.attendanceDays < b.attendanceDays ? 1 : -1))) {
     if (item.attendanceDays === 0) continue;
 
     // ５位までは表示する

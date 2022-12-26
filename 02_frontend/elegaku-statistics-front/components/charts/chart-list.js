@@ -26,9 +26,9 @@ const ChartList = (props) => {
     <>
       <Box>
         <Slider {...settings}>
-          <PieDays />
-          <PieTime />
-          <ChartAllTime />
+          <PieDays attendancesMonth={props.attendancesMonth} />
+          <PieTime attendancesMonth={props.attendancesMonth} />
+          <ChartAllTime attendances={props.attendanceInformation} />
         </Slider>
       </Box>
     </>

@@ -8,30 +8,7 @@ import { Input, FormControl, FormLabel } from '@chakra-ui/react';
 
 const MonthList = (props) => {
   const change = (e) => {
-    const ym = e.target.value;
-    const beforeYm = new Date(ym.split('-')[0], ym.split('-')[1] - 1, 0).toISOString().slice(0, 7);
-
-    // 日＋女の子ごとの出勤情報取得
-    // const attendances = getAttendanceInformation(ym);
-    // 月の女の子ごとの集計結果取得
-    // const attendancesMonth = getAttendanceInformationMonth(ym);
-    // 月単位の集計結果取得
-    // const attendancesMonthTotal = [];
-    // attendancesMonthTotal.push(getAttendanceInformationMonthTotal(ym));
-    // attendancesMonthTotal.push(getAttendanceInformationMonthTotal(beforeYm));
-
-    useEffect(() => {
-      async () => {
-        console.log('非同期');
-        const attendancesMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${ym}`).catch((error) => {
-          return [];
-        });
-        props.setValues({
-          ym: e.target.value,
-          attendanceInformationMonth: attendancesMonth.data.Items,
-        });
-      };
-    }, []);
+    props.setYm(e.target.value);
   };
 
   const date = new Date();

@@ -9,26 +9,17 @@ import GirlInfo from '../girl-info';
 
 import axios from 'axios';
 
-export function useAsyncEffect(asyncFunc, deps) {
-  useEffect(() => {
-    (async () => {
-      asyncFunc();
-    })();
-  }, deps);
-}
-
 const StatisticsGirl = () => {
   const [id, setId] = useState('');
-  const [girls, setGirls] = useState({});
+  const [girls, setGirls] = useState([]);
 
-  useAsyncEffect(async () => {
-    const response = await axios.get('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/girl');
-    console.log(response);
-    setGirls(response.data);
+  useEffect(() => {
+    const request = async () => {
+      const response = await axios.get('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/girl');
+      setGirls(response.data.Items);
+    };
+    request();
   }, []);
-
-  console.log(`girls-カスタムフック`);
-  console.log(girls);
 
   return (
     <>

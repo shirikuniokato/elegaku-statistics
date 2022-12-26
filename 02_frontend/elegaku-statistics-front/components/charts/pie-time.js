@@ -7,13 +7,13 @@ import React from 'react';
 import { Pie } from 'react-chartjs-2';
 import Data from '../web-api/month.json';
 
-const PieTime = () => {
+const PieTime = (props) => {
   const data = {
-    labels: createLabels(Data),
+    labels: createLabels(Data.Items),
     datasets: [
       {
         label: '出勤時間',
-        data: createData(Data),
+        data: createData(Data.Items),
         borderWidth: 1,
         datalabels: {
           color: 'white',
@@ -61,7 +61,7 @@ const createLabels = (data) => {
   const result = [];
 
   let count = 0;
-  for (const item of data.Items.sort((a, b) => (a.attendanceTime < b.attendanceTime ? 1 : -1))) {
+  for (const item of data.sort((a, b) => (a.attendanceTime < b.attendanceTime ? 1 : -1))) {
     if (item.attendanceTime === 0) continue;
 
     if (count < 5) {
@@ -79,7 +79,7 @@ const createData = (data) => {
   const result = [];
 
   let count = 0;
-  for (const item of data.Items.sort((a, b) => (a.attendanceTime < b.attendanceTime ? 1 : -1))) {
+  for (const item of data.sort((a, b) => (a.attendanceTime < b.attendanceTime ? 1 : -1))) {
     if (item.attendanceTime === 0) continue;
 
     // ５位までは表示する
