@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { AiFillHome, AiFillBell, AiFillPieChart } from 'react-icons/ai';
 import { AiOutlineHome, AiOutlineBell, AiOutlinePieChart, AiOutlineEllipsis } from 'react-icons/ai';
@@ -26,7 +26,7 @@ const FooterButton = (props) => {
   );
 };
 
-const getIcon = () => {
+const getIcons = () => {
   let result = [<AiOutlineHome size={25} />, <AiOutlineBell size={25} />, <AiOutlinePieChart size={25} />, <AiOutlineEllipsis size={25} />];
   const location = window.location.href;
   const locationArray = location.split('/');
@@ -48,12 +48,15 @@ const getIcon = () => {
       // アイコン変更なし（存在しないケース）
       break;
   }
-
   return result;
 };
 
 const Footer = () => {
-  const icons = getIcon();
+  const [icons, setIcons] = useState([]);
+  useEffect(() => {
+    setIcons(getIcons);
+  }, []);
+
   return (
     <>
       <Box bg="white" w="100%" h="calc(env(safe-area-inset-bottom) + 51.8px)" position="fixed" bottom="0">

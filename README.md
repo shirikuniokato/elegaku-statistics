@@ -122,6 +122,16 @@
 - Lambda見直し
   - 全体取得時に現状４回APIを叩いているが、１回のリクエストで全ての情報を取得するよう修正する
     - 女の子別画面も同様
+- DynamoDB見直し
+  - テーブル定義を見直す(特にscanしているテーブル)
+    - attendance-information
+      - テーブル名を「ym」にしてscan時の総数を減らした方が良さそう
+    - attendance-information-month
+      - テーブル名を「ym」
+    - attendance-information-month-total
+      - 現状、特になし
+    - girl
+      - 現状、特になし
 
 ## セキュリティ
 - originの設定見直し（デプロイ先のIP？とかだけを許可するように修正する）
