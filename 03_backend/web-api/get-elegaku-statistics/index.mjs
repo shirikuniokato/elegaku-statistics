@@ -11,28 +11,28 @@ export const handler = async (event) => {
   };
   let body = {
     attendanceInformation: {
-      // isError: 0,
-      // errorMessage: '',
+      isError: false,
+      errorMessage: '',
       count: 0,
       items: [],
     },
     attendanceInformationMonth: {
-      // isError: 0,
-      // errorMessage: '',
+      isError: false,
+      errorMessage: '',
       count: 0,
       items: [],
     },
     attendanceInformationMonthTotal: {
       currentMonth: {
-        // isError: 0,
-        // errorMessage: '',
-        exist: 1,
+        isError: false,
+        errorMessage: '',
+        exist: true,
         item: {},
       },
       lastMonth: {
-        // isError: 0,
-        // errorMessage: '',
-        exist: 1,
+        isError: false,
+        errorMessage: '',
+        exist: true,
         item: {},
       },
     },
@@ -80,8 +80,8 @@ const getAttendanceInformation = async (event, body) => {
     body.attendanceInformation.items = result.Items;
     body.attendanceInformation.count = result.Count;
   } catch (err) {
-    // body.attendanceInformation.isError = 1;
-    // body.attendanceInformation.errorMessage = err.message;
+    body.attendanceInformation.isError = true;
+    body.attendanceInformation.errorMessage = err.message;
   } finally {
     return body;
   }
@@ -102,8 +102,8 @@ const getAttendanceInformationMonth = async (event, body) => {
     body.attendanceInformationMonth.items = result.Items;
     body.attendanceInformationMonth.count = result.Count;
   } catch (err) {
-    // body.attendanceInformationMonth.isError = 1;
-    // body.attendanceInformationMonth.errorMessage = err.message;
+    body.attendanceInformationMonth.isError = true;
+    body.attendanceInformationMonth.errorMessage = err.message;
   } finally {
     return body;
   }
@@ -123,9 +123,9 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
     // 取得結果を設定
     if (isEmpty(result)) {
       if (isCurrent) {
-        body.attendanceInformationMonthTotal.currentMonth.exist = 0;
+        body.attendanceInformationMonthTotal.currentMonth.exist = false;
       } else {
-        body.attendanceInformationMonthTotal.lastMonth.exist = 0;
+        body.attendanceInformationMonthTotal.lastMonth.exist = false;
       }
     } else {
       if (isCurrent) {
@@ -136,11 +136,11 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
     }
   } catch (err) {
     if (isCurrent) {
-      // body.attendanceInformationMonthTotal.currentMonth.isError = 1;
-      // body.attendanceInformationMonthTotal.currentMonth.errorMessage = err.message;
+      body.attendanceInformationMonthTotal.currentMonth.isError = true;
+      body.attendanceInformationMonthTotal.currentMonth.errorMessage = err.message;
     } else {
-      // body.attendanceInformationMonthTotal.lastMonth.isError = 1;
-      // body.attendanceInformationMonthTotal.lastMonth.errorMessage = err.message;
+      body.attendanceInformationMonthTotal.lastMonth.isError = true;
+      body.attendanceInformationMonthTotal.lastMonth.errorMessage = err.message;
     }
   } finally {
     return body;
