@@ -4,59 +4,58 @@ const aws = require('aws-sdk');
 aws.config.update({ region: 'ap-northeast-1' });
 const dynamo = new aws.DynamoDB.DocumentClient({ apiVersion: '2012-08-10' });
 
-let body = {
-  attendanceInformation: {
-    // isError: 0,
-    // errorMessage: '',
-    count: 0,
-    items: [],
-  },
-  attendanceInformationMonth: {
-    // isError: 0,
-    // errorMessage: '',
-    count: 0,
-    items: [],
-  },
-  attendanceInformationMonthTotal: {
-    currentMonth: {
-      // isError: 0,
-      // errorMessage: '',
-      exist: 1,
-      item: {},
-    },
-    lastMonth: {
-      // isError: 0,
-      // errorMessage: '',
-      exist: 1,
-      item: {},
-    },
-  },
-};
-
 export const handler = async (event) => {
   let statusCode = 200;
   const headers = {
     'Content-Type': 'application/json',
   };
+  let body = {
+    attendanceInformation: {
+      // isError: 0,
+      // errorMessage: '',
+      count: 0,
+      items: [],
+    },
+    attendanceInformationMonth: {
+      // isError: 0,
+      // errorMessage: '',
+      count: 0,
+      items: [],
+    },
+    attendanceInformationMonthTotal: {
+      currentMonth: {
+        // isError: 0,
+        // errorMessage: '',
+        exist: 1,
+        item: {},
+      },
+      lastMonth: {
+        // isError: 0,
+        // errorMessage: '',
+        exist: 1,
+        item: {},
+      },
+    },
+  };
 
   try {
     switch (event.routeKey) {
       case 'GET /elegaku-statistics/init/{ym}':
-        await getAttendanceInformation(event);
-        await getAttendanceInformationMonth(event);
-        await getattendanceInformationMonthTotal(event, true);
-        await getattendanceInformationMonthTotal(event, false);
+        body = await getAttendanceInformation(event, body);
+        body = await getAttendanceInformationMonth(event, body);
+        body = await getattendanceInformationMonthTotal(event, true, body);
+        body = await getattendanceInformationMonthTotal(event, false, body);
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }
   } catch (err) {
+    console.log(err);
     statusCode = 400;
     body = err.message;
   } finally {
     body = JSON.stringify(body);
   }
-
   return {
     statusCode,
     body,
@@ -65,7 +64,7 @@ export const handler = async (event) => {
 };
 
 // 月の出勤情報取得
-const getAttendanceInformation = async (event) => {
+const getAttendanceInformation = async (event, body) => {
   try {
     // データ取得
     const result = await dynamo
@@ -83,11 +82,13 @@ const getAttendanceInformation = async (event) => {
   } catch (err) {
     // body.attendanceInformation.isError = 1;
     // body.attendanceInformation.errorMessage = err.message;
+  } finally {
+    return body;
   }
 };
 
 // 月単位の出勤情報を取得する
-const getAttendanceInformationMonth = async (event) => {
+const getAttendanceInformationMonth = async (event, body) => {
   try {
     // データ取得
     const params = {
@@ -103,11 +104,13 @@ const getAttendanceInformationMonth = async (event) => {
   } catch (err) {
     // body.attendanceInformationMonth.isError = 1;
     // body.attendanceInformationMonth.errorMessage = err.message;
+  } finally {
+    return body;
   }
 };
 
 // 月単位の集計データを取得
-const getattendanceInformationMonthTotal = async (event, isCurrent) => {
+const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
   try {
     // データ取得
     const targetYm = isCurrent ? event.pathParameters.ym : getBeforeMonth(event.pathParameters.ym);
@@ -139,6 +142,8 @@ const getattendanceInformationMonthTotal = async (event, isCurrent) => {
       // body.attendanceInformationMonthTotal.lastMonth.isError = 1;
       // body.attendanceInformationMonthTotal.lastMonth.errorMessage = err.message;
     }
+  } finally {
+    return body;
   }
 };
 
