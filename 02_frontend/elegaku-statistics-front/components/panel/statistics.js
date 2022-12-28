@@ -27,55 +27,46 @@ const Statistics = () => {
 
   // 初期表示時
   useEffect(() => {
-    console.log(ym);
-    const request = async () => {
-      await axios
-        .get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`)
-        .then((res) => {
-          console.log(res);
-          const response = JSON.stringify(res);
-          console.log(response);
-          setAttendanceInformation(response.data.attendanceInformation.items);
-          setAttendanceInformationMonth(response.data.attendanceInformationMonth.items);
-          setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth.item);
-          setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth.item);
-        })
-        .catch((e) => {
-          setIsError(true);
-          console.log(e);
-        });
+    const fetch = async () => {
+      // ロード中
+      setIsLoaded(false);
+      setIsError(false);
 
+      try {
+        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`);
+        setAttendanceInformation(response.data.attendanceInformation.items);
+        setAttendanceInformationMonth(response.data.attendanceInformationMonth.items);
+        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth.item);
+        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth.item);
+      } catch (err) {
+        setIsError(true);
+      }
       // ロード完了
       setIsLoaded(true);
     };
-    request();
+    fetch();
   }, []);
 
   // 対象年月変更時
   useEffect(() => {
-    const request = async () => {
+    const fetch = async () => {
       // ロード中
       setIsLoaded(false);
-
-      // await axios
-      //   .get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`)
-      //   .then((response) => {
-      //     const responseJson = JSON.stringify(response.data);
-      //     console.log(responseJson);
-      //     setAttendanceInformation(responseJson.data.attendanceInformation.items);
-      //     setAttendanceInformationMonth(responseJson.data.attendanceInformationMonth.items);
-      //     setAttendanceInformationMonthTotal(responseJson.data.attendanceInformationMonthTotal.currentMonth.item);
-      //     setAttendanceInformationMonthTotalLast(responseJson.data.attendanceInformationMonthTotal.lastMonth.item);
-      //   })
-      //   .catch((e) => {
-      //     setIsError(true);
-      //     console.log(e);
-      //   });
-
+      setIsError(false);
+      try {
+        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`);
+        setAttendanceInformation(response.data.attendanceInformation.items);
+        setAttendanceInformationMonth(response.data.attendanceInformationMonth.items);
+        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth.item);
+        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth.item);
+      } catch (err) {
+        // エラー発生
+        setIsError(true);
+      }
       // ロード完了
       setIsLoaded(true);
     };
-    request();
+    fetch();
   }, [ym]);
 
   return (
@@ -86,7 +77,7 @@ const Statistics = () => {
 
       <Box>
         {isError ? (
-          <Box>データ取得時にエラーが発生しました。</Box>
+          <Text>データ取得中にエラーが発生しました。</Text>
         ) : (
           <Box>
             <ChartList isLoaded={isLoaded} ym={ym} attendances={attendanceInformation} attendancesMonth={attendanceInformationMonth} />
