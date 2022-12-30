@@ -3,8 +3,7 @@
 import React from 'react';
 import { Box, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup, Skeleton } from '@chakra-ui/react';
 
-import Line from './common/line';
-import Title from './common/title';
+import Title from '../../common/item-title';
 
 const CompareResult = (percent, result) => {
   return (

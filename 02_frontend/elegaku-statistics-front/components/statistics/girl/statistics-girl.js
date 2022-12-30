@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 // ライブラリ
 import { Box } from '@chakra-ui/react';
 // その他
-import Line from '../common/line';
-import GirlList from '../search/girl-select';
-import GirlInfo from '../girl-info';
-import MonthCompare from '../month-compare';
+import Line from '../../common/line';
+import GirlList from './girl-select';
+import GirlInfo from './girl-info';
+import MonthCompare from '../common/month-compare';
 
 import axios from 'axios';
 
@@ -53,14 +53,14 @@ const StatisticsGirl = () => {
 
   return (
     <>
+      <Box mt={4} />
       <GirlList setId={setId} girls={girls} />
       <Box m={8} />
-      <Line />
       <GirlInfo id={id} girls={girls} />
       {id === '' ? null : (
         <>
           <Box mt={8}></Box>
-          <Line />
+          {/* <Line /> */}
         </>
       )}
       {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />}

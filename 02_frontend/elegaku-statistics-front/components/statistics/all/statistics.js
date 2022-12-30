@@ -9,11 +9,11 @@ import { Box } from '@chakra-ui/react';
 import axios from 'axios';
 
 // その他
-import MonthList from '../search/month-select';
-import ChartList from '../../components/charts/chart-list';
-import MonthCompare from '../month-compare';
-import Rank from '../../components/rank';
-import Line from '../common/line';
+import MonthList from './month-select';
+import ChartList from '../../charts/chart-list';
+import MonthCompare from '../common/month-compare';
+import Rank from './rank';
+import Line from '../../common/line';
 
 const Statistics = () => {
   const [ym, setYm] = useState(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`);
@@ -71,6 +71,7 @@ const Statistics = () => {
 
   return (
     <>
+      <Box mt={4} />
       <MonthList setYm={setYm} />
       <Box mt={8}></Box>
       <Line />
@@ -82,9 +83,10 @@ const Statistics = () => {
           <Box>
             <ChartList isLoaded={isLoaded} ym={ym} attendances={attendanceInformation} attendancesMonth={attendanceInformationMonth} />
             <Box mt={12}></Box>
-            <Line />
+            {/* <Line /> */}
             <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonthTotal} attendancesMonthTotalLast={attendanceInformationMonthTotalLast} />
-            <Line />
+            {/* <Line /> */}
+            <Box mt={12} />
             <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} />
           </Box>
         )}

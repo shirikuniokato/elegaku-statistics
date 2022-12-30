@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Data from '../web-api/girl.json';
 import { Select, FormControl, FormLabel } from '@chakra-ui/react';
+import Title from '../../common/item-title';
 
 const GirlList = (props) => {
   const change = (e) => {
@@ -12,7 +12,9 @@ const GirlList = (props) => {
   return (
     <>
       <FormControl>
-        <FormLabel>生徒</FormLabel>
+        <FormLabel>
+          <Title title="生徒" />
+        </FormLabel>
         {props.girls.length == 0 ? (
           <p>データがありません</p>
         ) : (

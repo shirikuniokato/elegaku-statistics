@@ -1,9 +1,11 @@
 'use client';
 
+import PageTitle from '../../components/common/page-title';
+
 export default function Page() {
   return (
     <>
-      <h5>通知画面</h5>
+      <PageTitle title="通知" />
     </>
   );
 }
