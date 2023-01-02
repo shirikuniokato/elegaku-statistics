@@ -50,7 +50,6 @@ export const handler = async (event) => {
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }
   } catch (err) {
-    console.log(err);
     statusCode = 400;
     body = err.message;
   } finally {
@@ -121,18 +120,15 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
     const result = await dynamo.get(params).promise();
 
     // 取得結果を設定
-    if (isEmpty(result)) {
-      if (isCurrent) {
-        body.attendanceInformationMonthTotal.currentMonth.exist = false;
-      } else {
-        body.attendanceInformationMonthTotal.lastMonth.exist = false;
-      }
+    if (isCurrent) {
+      body.attendanceInformationMonthTotal.currentMonth.exist = false;
     } else {
-      if (isCurrent) {
-        body.attendanceInformationMonthTotal.currentMonth.item = result.Item;
-      } else {
-        body.attendanceInformationMonthTotal.lastMonth.item = result.Item;
-      }
+      body.attendanceInformationMonthTotal.lastMonth.exist = false;
+    }
+    if (isCurrent) {
+      body.attendanceInformationMonthTotal.currentMonth.item = result.Item;
+    } else {
+      body.attendanceInformationMonthTotal.lastMonth.item = result.Item;
     }
   } catch (err) {
     if (isCurrent) {
@@ -150,10 +146,5 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
 // 前月取得
 const getBeforeMonth = (ym) => {
   const date = new Date(ym.split('-')[0], ym.split('-')[1] - 1, 1);
-  return `${date.getFullYear()}-${date.getMonth() + 1}`;
+  return `${date.getFullYear()}-${date.getMonth()}`;
 };
-
-// オブジェクト(={})の存在チェック
-function isEmpty(obj) {
-  return Object.keys(obj).length === 0;
-}

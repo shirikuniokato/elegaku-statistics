@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 // ライブラリ
 import { Box } from '@chakra-ui/react';
 // その他
-import Line from '../../common/line';
 import GirlList from './girl-select';
 import GirlInfo from './girl-info';
 import MonthCompare from '../common/month-compare';

@@ -8,7 +8,7 @@ import { Box, Flex, Button, Text, Link } from '@chakra-ui/react';
 
 const FooterButton = (props) => {
   // const labels = ['HOME', '通知', '統計', '口コミ', 'その他'];
-  const labels = ['ホーム', '通知', '統計', '口コミ', 'その他'];
+  const labels = ['ホーム', '出勤通知', '統計', '口コミ', 'その他'];
   const hrefs = ['/', '/notification', '/statistics', '/review', '/other'];
 
   return (
@@ -63,24 +63,13 @@ const Footer = () => {
 
   return (
     <>
-      <Flex bg="white" w="100%" h="calc(env(safe-area-inset-bottom) + 51.8px)" position="fixed" bottom="0" borderTop="1px" borderColor="gray.200" pb="env(safe-area-inset-bottom)" justifyContent="center" alignItems="center">
+      <Flex bg="white" w="100%" h="calc(env(safe-area-inset-bottom) + 51.8px)" position="fixed" bottom="0" borderTop="1px" borderColor="gray.200" pb="env(safe-area-inset-bottom)" justifyContent="center" alignItems="center" zIndex="99">
         <FooterButton index={0} icons={icons} />
         <FooterButton index={1} icons={icons} />
         <FooterButton index={2} icons={icons} />
         <FooterButton index={3} icons={icons} />
         <FooterButton index={4} icons={icons} />
       </Flex>
-      {/* <Box bg="white" w="100%" h="calc(env(safe-area-inset-bottom) + 51.8px)" position="fixed" bottom="0">
-        <Box bg="white" w="100%" h="51.8px" justifyContent="center" alignItems="center" borderTop="1px" borderColor="gray.200">
-          <Flex bg="white" w="100%" h="100%" justifyContent="center" alignItems="center">
-            <FooterButton index={0} icons={icons} />
-            <FooterButton index={1} icons={icons} />
-            <FooterButton index={2} icons={icons} />
-            <FooterButton index={3} icons={icons} />
-            <FooterButton index={4} icons={icons} />
-          </Flex>
-        </Box>
-      </Box> */}
     </>
   );
 };
