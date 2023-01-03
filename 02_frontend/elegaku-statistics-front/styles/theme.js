@@ -5,6 +5,13 @@ const theme = extendTheme({
     heading: `'Noto Sans JP', sans-serif`,
     body: `'Noto Sans JP', sans-serif`,
   },
+  styles: {
+    global: {
+      body: {
+        backgroundColor: '#F5F5F5',
+      },
+    },
+  },
   components: {
     Link: {
       baseStyle: {

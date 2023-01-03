@@ -12,10 +12,6 @@ export const handler = async (event) => {
   };
 
   try {
-    console.log(event.routeKey);
-    console.log(event.pathParameters.id);
-    console.log(event.pathParameters.ym);
-
     let params = {};
     switch (event.routeKey) {
       case 'GET /attendance-information-month':

@@ -12,7 +12,7 @@ const TopButton = () => {
 
   return (
     <>
-      <IconButton colorScheme="gray" size="lg" shadow="md" rounded="full" icon={<AiOutlineUp />} onClick={returnTop} position="fixed" right="5" bottom="5" />
+      <IconButton colorScheme="gray" size="lg" shadow="md" rounded="full" icon={<AiOutlineUp />} onClick={returnTop} position="fixed" right="5" bottom="calc(env(safe-area-inset-bottom) + 70px)" />
     </>
   );
 };
