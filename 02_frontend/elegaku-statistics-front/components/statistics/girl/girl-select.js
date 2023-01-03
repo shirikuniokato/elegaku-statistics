@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Select, FormControl, FormLabel } from '@chakra-ui/react';
+import { Select, FormControl, FormLabel, Skeleton } from '@chakra-ui/react';
 import Title from '../../common/item-title';
 
 const GirlList = (props) => {
@@ -15,13 +15,11 @@ const GirlList = (props) => {
         <FormLabel>
           <Title title="生徒" />
         </FormLabel>
-        {props.girls.length == 0 ? (
-          <p>データがありません</p>
-        ) : (
+        <Skeleton borderRadius="md" isLoaded={props.isLoaded}>
           <Select placeholder="選択してください" onChange={change}>
             {craeteOptions(props.girls)}
           </Select>
-        )}
+        </Skeleton>
       </FormControl>
     </>
   );
