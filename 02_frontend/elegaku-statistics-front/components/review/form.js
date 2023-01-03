@@ -1,7 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import axios from 'axios';
+
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import { useToast } from '@chakra-ui/react';
 import { Box, Divider, Button, FormControl, FormLabel, Input } from '@chakra-ui/react';
 import { Flex, Image, Stack, Heading, Text, Textarea } from '@chakra-ui/react';
 import { Slider, SliderTrack, SliderFilledTrack, SliderMark, SliderThumb } from '@chakra-ui/react';
@@ -94,6 +97,15 @@ const Form = (props) => {
     setScore((((face + body + charm + service + erotic + technique) / 6) * 0.05).toFixed(1));
   };
 
+  const toast = useToast();
+  const toastConfig = {
+    duration: 3000,
+    isClosable: true,
+    containerStyle: {
+      marginBottom: 'calc(env(safe-area-inset-bottom) + 70px)',
+    },
+  };
+
   const submit = () => {
     const data = {
       id: id,
@@ -109,6 +121,27 @@ const Form = (props) => {
       title: title,
       contents: contents,
     };
+    const request = async () => {
+      try {
+        await axios.post('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/review/add', data);
+      } catch (error) {
+        toast({
+          title: '投稿に失敗しました。',
+          description: error,
+          status: 'error',
+          ...toastConfig,
+        });
+        return;
+      }
+      toast({
+        title: '投稿に成功しました。',
+        status: 'info',
+        ...toastConfig,
+      });
+      props.onClose();
+      initializeForm();
+    };
+    request();
   };
 
   const initializeForm = () => {
