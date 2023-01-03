@@ -5,7 +5,6 @@ import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { Pie } from 'react-chartjs-2';
-import Data from '../web-api/month.json';
 
 const PieTime = (props) => {
   const data = {

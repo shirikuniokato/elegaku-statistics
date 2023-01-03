@@ -5,7 +5,7 @@ import { Text, Box, Image } from '@chakra-ui/react';
 import { Flex, Stack, Heading, Link } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 
-import Title from './common/title';
+import Title from '../../common/item-title';
 
 const GirlInfo = (props) => {
   // props.idが空の場合は何も表示しない
