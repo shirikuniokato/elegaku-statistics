@@ -9,34 +9,53 @@ import { Box } from '@chakra-ui/react';
 
 // その他
 import Title from '../common/item-title';
+import ReviewList from './review-list';
 import WriteButton from './write-button';
 import Form from './form';
+import GirlList from '../statistics/girl/girl-select';
+import SkeletonList from './skelton-list';
 
 const Review = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [reviews, setReviews] = useState([]);
   const [girls, setGirls] = useState([]);
+  const [targetReviews, setTargetReviews] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [condition, setCondition] = useState('');
 
   useEffect(() => {
+    setIsLoaded(false);
     const request = async () => {
-      const response = await axios.get('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/girl');
-      setGirls(response.data.Items);
+      const response = await axios.get('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/review/init');
+      setReviews(response.data.review.items);
+      setTargetReviews(response.data.review.items);
+      setGirls(response.data.girl.items);
     };
     request();
+    setIsLoaded(true);
   }, []);
+
+  // 検索条件変更時
+  useEffect(() => {
+    if (condition === '') {
+      setTargetReviews(reviews);
+    } else {
+      setTargetReviews(reviews.filter((r) => r.id === condition));
+    }
+  }, [condition]);
 
   return (
     <>
       <Box p="16px">
-        <Title title="最近の口コミ" />
+        <GirlList girls={girls} setId={setCondition} isLoaded={isLoaded} />
         <Box mb={8} />
 
-        <Title title="生徒一覧" />
-        <Box mb={8} />
-
-        <Form onClose={onClose} isOpen={isOpen} girls={girls} />
+        <Title title="口コミ一覧" />
+        {isLoaded ? <ReviewList reviews={targetReviews} girls={girls} isLoaded={isLoaded} /> : <SkeletonList />}
         <Box mb={8} />
       </Box>
+      <Form onClose={onClose} isOpen={isOpen} girls={girls} isLoaded={isLoaded} />
       <WriteButton onOpen={onOpen} />
     </>
   );

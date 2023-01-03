@@ -209,7 +209,7 @@ const Form = (props) => {
           <ModalHeader>投稿フォーム</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <GirlList setId={setId} girls={props.girls} />
+            <GirlList setId={setId} girls={props.girls} isLoaded={props.isLoaded} />
             <Box m={8} />
             <Title title="生徒詳細" />
             {!isSelected ? (
