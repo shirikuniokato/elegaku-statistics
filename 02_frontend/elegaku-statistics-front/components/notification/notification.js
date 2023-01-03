@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 // Chakra UI関連
-import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Input, Text, Link } from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
 // その他
 import Title from '../common/item-title';
@@ -69,6 +69,14 @@ const Notification = () => {
           <Button flex={2} maxW="150px" colorScheme="twitter" leftIcon={<FaTwitter />} onClick={() => login()} isDisabled={userId !== ''}>
             ログイン
           </Button>
+          <Text mt={2} fontSize="sm">
+            iOSの方は一度、
+            <Link flex={2} color="teal.500" href="https://twitter.com/login" target="_brank">
+              こちら
+            </Link>
+            からブラウザにてTwitterログイン後、上記のログインボタンをクリックしてください。
+          </Text>
+
           {isError ? (
             <Text mt={2} color="red.500" fontSize="sm">
               ログインに失敗しました。
