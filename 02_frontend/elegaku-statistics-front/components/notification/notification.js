@@ -69,13 +69,13 @@ const Notification = () => {
           <Button flex={2} maxW="150px" colorScheme="twitter" leftIcon={<FaTwitter />} onClick={() => login()} isDisabled={userId !== ''}>
             ログイン
           </Button>
-          <Text mt={2} fontSize="sm">
+          <Box mt={2} fontSize="sm">
             iOSの方は一度、
             <Link flex={2} color="teal.500" href="https://twitter.com/login" target="_brank">
               こちら
             </Link>
             からブラウザにてTwitterログイン後、上記のログインボタンをクリックしてください。
-          </Text>
+          </Box>
 
           {isError ? (
             <Text mt={2} color="red.500" fontSize="sm">

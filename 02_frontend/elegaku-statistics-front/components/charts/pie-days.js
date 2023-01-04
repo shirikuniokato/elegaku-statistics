@@ -44,12 +44,8 @@ const PieDays = (props) => {
     },
   };
 
-  const divStyle = {
-    width: '98%',
-  };
-
   return (
-    <Box style={divStyle} m="auto">
+    <Box w="350px" h="350px" m="auto">
       <Pie height={300} width={300} data={data} options={options} id="days" plugins={[ChartDataLabels]} />
     </Box>
   );

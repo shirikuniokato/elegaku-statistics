@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 // Chakra UI関連
 import { Tabs, Tab, TabPanels, TabPanel, TabList } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 // その他
 import PageTitle from '../../components/common/page-title';
@@ -14,7 +15,12 @@ export default function Page() {
   return (
     <>
       <PageTitle title="統計" />
-      <Tabs isFitted variant="line" colorScheme="cyan">
+      <Box h="8vh">
+        <Text fontSize="1em" textAlign="center">
+          作成中です。しばらくお待ちください
+        </Text>
+      </Box>
+      {/* <Tabs isFitted variant="line" colorScheme="cyan">
         <TabList>
           <Tab>全体</Tab>
           <Tab>生徒別</Tab>
@@ -27,7 +33,7 @@ export default function Page() {
             <StatisticsGirl />
           </TabPanel>
         </TabPanels>
-      </Tabs>
+      </Tabs> */}
     </>
   );
 }

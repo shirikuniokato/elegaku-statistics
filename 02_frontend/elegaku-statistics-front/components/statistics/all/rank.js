@@ -38,7 +38,7 @@ const Rank = (props) => {
           })}
       </Box>
 
-      <Box mt={12} />
+      <Box mt={8} />
 
       <Title title="出勤時間" />
       {props.isLoaded ? null : RankSkeleton(props.isLoaded)}

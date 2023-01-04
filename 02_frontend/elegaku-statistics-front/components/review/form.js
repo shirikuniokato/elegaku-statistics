@@ -127,7 +127,6 @@ const Form = (props) => {
       } catch (error) {
         toast({
           title: '投稿に失敗しました。',
-          description: error,
           status: 'error',
           ...toastConfig,
         });
@@ -234,7 +233,7 @@ const Form = (props) => {
                 <Box m={8} />
                 <Title title="投稿内容" />
                 <FormControl>
-                  <FormLabel>名前</FormLabel>
+                  <FormLabel>お名前</FormLabel>
                   <Input maxLength={20} placeholder="20文字以内" value={userName} onChange={(e) => setUserName(e.target.value)} />
                 </FormControl>
                 <Box m={2} />
@@ -344,7 +343,7 @@ const Form = (props) => {
                 <Box m={2} />
                 <FormControl>
                   <FormLabel>詳細</FormLabel>
-                  <Textarea placeholder="女の子の感想等をご自由に入力してください。（200文字以内）" h="10em" value={contents} onChange={(e) => setContents(e.target.value)} />
+                  <Textarea maxLength={400} placeholder="女の子の感想等をご自由に入力してください。（400文字以内）" h="10em" value={contents} onChange={(e) => setContents(e.target.value)} />
                 </FormControl>
               </>
             )}
