@@ -53,15 +53,10 @@ const StatisticsGirl = () => {
   return (
     <>
       <Box mt={4} />
-      <GirlList setId={setId} girls={girls} />
+      <GirlList setId={setId} girls={girls} isLoaded={isLoaded} />
       <Box m={8} />
       <GirlInfo id={id} girls={girls} />
-      {id === '' ? null : (
-        <>
-          <Box mt={8}></Box>
-          {/* <Line /> */}
-        </>
-      )}
+      {id === '' ? null : <Box mt={8}></Box>}
       {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />}
     </>
   );

@@ -27,12 +27,8 @@ const ChartAllTime = (props) => {
     },
   };
 
-  const divStyle = {
-    width: '98%',
-  };
-
   return (
-    <Box style={divStyle} m="auto">
+    <Box w="350px" h="350px" m="auto">
       <Line height={300} width={300} data={graphData} options={options} plugins={[ChartDataLabels]} />
     </Box>
   );
@@ -56,7 +52,7 @@ const createDatasets = (data, ym) => {
   // 日毎に勤務時間を集計
   for (const item of data) {
     if (item.start !== '') {
-      dateList[parseInt(item.date.substring(8) - 1)]++;
+      dateList[parseInt(item.date.split('-')[2]) - 1]++;
     }
   }
   result.push({

@@ -10,17 +10,15 @@ const MonthList = (props) => {
     props.setYm(e.target.value);
   };
 
-  const date = new Date();
-  const defaultYearMonth = date.getFullYear() + '-' + (date.getMonth() + 1);
-
   return (
     <>
       <FormControl>
         <FormLabel>
           <Title title="対象年月" />
         </FormLabel>
-        {/* <FormLabel>対象年月</FormLabel> */}
-        <Input placeholder="対象年月を設定してください" size="md" type="month" defaultValue={defaultYearMonth} onChange={change} />
+        <FormLabel>対象年月</FormLabel>
+        <Input placeholder="対象年月を設定してください" size="md" type="month" defaultValue={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString().padStart(2, '0')}`} onChange={change} />
+        {/* <Input placeholder="対象年月を設定してください" size="md" type="month" defaultValue={`${new Date().getFullYear()}-${(new Date().getMonth() + 1).toString()}`} onChange={change} /> */}
       </FormControl>
     </>
   );

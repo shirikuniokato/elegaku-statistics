@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 // Chakra UI関連
-import { Box } from '@chakra-ui/react';
+import { Box, Text } from '@chakra-ui/react';
 
 // 非同期通信
 import axios from 'axios';
@@ -17,10 +17,10 @@ import Line from '../../common/line';
 
 const Statistics = () => {
   const [ym, setYm] = useState(`${new Date().getFullYear()}-${new Date().getMonth() + 1}`);
-  const [attendanceInformation, setAttendanceInformation] = useState([]);
-  const [attendanceInformationMonth, setAttendanceInformationMonth] = useState([]);
-  const [attendanceInformationMonthTotal, setAttendanceInformationMonthTotal] = useState({});
-  const [attendanceInformationMonthTotalLast, setAttendanceInformationMonthTotalLast] = useState({});
+  const [attendanceInformation, setAttendanceInformation] = useState({ isError: false, errorMessage: '', count: 0, items: [] });
+  const [attendanceInformationMonth, setAttendanceInformationMonth] = useState({ isError: false, errorMessage: '', count: 0, items: [] });
+  const [attendanceInformationMonthTotal, setAttendanceInformationMonthTotal] = useState({ isError: false, errorMessage: '', exist: true, item: {} });
+  const [attendanceInformationMonthTotalLast, setAttendanceInformationMonthTotalLast] = useState({ isError: false, errorMessage: '', exist: true, item: {} });
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -32,13 +32,16 @@ const Statistics = () => {
       setIsLoaded(false);
       setIsError(false);
 
+      // 変数ymをyyyy-m形式へ変換
+      const requestYm = `${ym.split('-')[0]}-${parseInt(ym.split('-')[1])}`;
       try {
-        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`);
-        setAttendanceInformation(response.data.attendanceInformation.items);
-        setAttendanceInformationMonth(response.data.attendanceInformationMonth.items);
-        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth.item);
-        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth.item);
+        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/init/${requestYm}`);
+        setAttendanceInformation(response.data.attendanceInformation);
+        setAttendanceInformationMonth(response.data.attendanceInformationMonth);
+        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth);
+        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth);
       } catch (err) {
+        console.log(err);
         setIsError(true);
       }
       // ロード完了
@@ -53,12 +56,17 @@ const Statistics = () => {
       // ロード中
       setIsLoaded(false);
       setIsError(false);
+
+      // 変数ymをyyyy-m形式へ変換
+      const requestYm = `${ym.split('-')[0]}-${parseInt(ym.split('-')[1])}`;
       try {
-        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/elegaku-statistics/init/${ym}`);
-        setAttendanceInformation(response.data.attendanceInformation.items);
-        setAttendanceInformationMonth(response.data.attendanceInformationMonth.items);
-        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth.item);
-        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth.item);
+        const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/init/${requestYm}`);
+        setAttendanceInformation(response.data.attendanceInformation);
+        setAttendanceInformationMonth(response.data.attendanceInformationMonth);
+        setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth);
+        setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth);
+        console.log(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/init/${ym}`);
+        console.log(response.data);
       } catch (err) {
         // エラー発生
         setIsError(true);
@@ -78,16 +86,14 @@ const Statistics = () => {
 
       <Box>
         {isError ? (
-          <Text>データ取得中にエラーが発生しました。</Text>
+          <Text color="red.500">データ取得中にエラーが発生しました。</Text>
         ) : (
           <Box>
             <ChartList isLoaded={isLoaded} ym={ym} attendances={attendanceInformation} attendancesMonth={attendanceInformationMonth} />
             <Box mt={12}></Box>
-            {/* <Line /> */}
             <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonthTotal} attendancesMonthTotalLast={attendanceInformationMonthTotalLast} />
-            {/* <Line /> */}
             <Box mt={12} />
-            <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} />
+            {/* <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} /> */}
           </Box>
         )}
       </Box>

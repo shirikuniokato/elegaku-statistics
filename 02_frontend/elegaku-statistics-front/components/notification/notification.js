@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 // Chakra UI関連
-import { Box, Button, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Input, Text, Link } from '@chakra-ui/react';
 import { FaTwitter } from 'react-icons/fa';
 // その他
 import Title from '../common/item-title';
-import { NotificationList, SkeletonList } from './notification-list';
+import NotificationList from './notification-list';
 
 import axios from 'axios';
 
@@ -31,13 +31,11 @@ auth.languageCode = 'ja';
 // TODO 第二引数をuserに戻す
 const Notification = () => {
   const [userId, setUserId] = useState('');
+  const [userName, setUserName] = useState('');
   const [isError, setIsError] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [notificationList, setNotificationList] = useState([]);
 
   useEffect(() => {
-    // ロード開始
-    setIsLoaded(false);
     const request = async () => {
       try {
         const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/notification/init/${userId}`);
@@ -47,17 +45,15 @@ const Notification = () => {
       }
     };
     request();
-
-    // ロード終了
-    setIsLoaded(true);
   }, [userId]);
 
   const login = () => {
     setIsError(false);
     signInWithPopup(auth, provider)
       .then((result) => {
-        const user = result.user.reloadUserInfo.screenName;
-        setUserId(user);
+        const user = result.user;
+        setUserId(user.providerData[0].uid);
+        setUserName(user.reloadUserInfo.screenName);
       })
       .catch((error) => {
         setIsError(true);
@@ -69,10 +65,18 @@ const Notification = () => {
       <Box p="16px">
         <Title title="Twitterログイン" />
         <Box>
-          <Input flex={4} value={userId} mb={4} bgColor="gray.200" placeholder="@ユーザID" disabled />
+          <Input flex={4} value={userName} mb={4} bgColor="gray.200" placeholder="@ユーザID" disabled />
           <Button flex={2} maxW="150px" colorScheme="twitter" leftIcon={<FaTwitter />} onClick={() => login()} isDisabled={userId !== ''}>
             ログイン
           </Button>
+          <Box mt={2} fontSize="sm">
+            iOSの方は一度、
+            <Link flex={2} color="teal.500" href="https://twitter.com/login" target="_brank">
+              こちら
+            </Link>
+            からブラウザにてTwitterログイン後、上記のログインボタンをクリックしてください。
+          </Box>
+
           {isError ? (
             <Text mt={2} color="red.500" fontSize="sm">
               ログインに失敗しました。
@@ -82,7 +86,7 @@ const Notification = () => {
 
         <Box mb={8} />
         <Title title="生徒一覧" />
-        {userId === '' ? <Text>ログインしてください。</Text> : isLoaded ? <NotificationList userId={userId} notificationList={notificationList} /> : null}
+        {userId === '' ? <Text>ログインしてください。</Text> : <NotificationList userId={userId} notificationList={notificationList} />}
         <Box mb={8} />
       </Box>
     </>

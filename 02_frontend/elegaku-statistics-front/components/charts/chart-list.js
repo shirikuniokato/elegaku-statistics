@@ -1,7 +1,7 @@
 'use client';
 
 // ライブラリ
-import { Box, Skeleton } from '@chakra-ui/react';
+import { Box, Skeleton, Text } from '@chakra-ui/react';
 
 // スライダー関連
 import 'slick-carousel/slick/slick.css';
@@ -14,6 +14,7 @@ import PieTime from './pie-time';
 import PieDays from './pie-days';
 
 const ChartList = (props) => {
+  console.log(props);
   const settings = {
     dots: true,
     infinite: true,
@@ -24,15 +25,25 @@ const ChartList = (props) => {
 
   return (
     <>
-      <Box>
-        <Skeleton isLoaded={props.isLoaded}>
-          <Slider {...settings}>
-            <PieDays attendancesMonth={props.attendancesMonth} />
-            <PieTime attendancesMonth={props.attendancesMonth} />
-            <ChartAllTime attendances={props.attendances} ym={props.ym} />
-          </Slider>
-        </Skeleton>
-      </Box>
+      {props.attendances.count === 0 ? (
+        <Box>
+          <Skeleton isLoaded={props.isLoaded}>
+            <Text w="350px" h="350px">
+              データが存在しません。
+            </Text>
+          </Skeleton>
+        </Box>
+      ) : (
+        <Box>
+          <Skeleton isLoaded={props.isLoaded}>
+            <Slider {...settings}>
+              <PieDays attendancesMonth={props.attendancesMonth.items} />
+              <PieTime attendancesMonth={props.attendancesMonth.items} />
+              <ChartAllTime attendances={props.attendances.items} ym={props.ym} />
+            </Slider>
+          </Skeleton>
+        </Box>
+      )}
     </>
   );
 };

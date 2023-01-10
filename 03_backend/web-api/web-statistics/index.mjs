@@ -26,13 +26,13 @@ export const handler = async (event) => {
       currentMonth: {
         isError: false,
         errorMessage: '',
-        exist: true,
+        exist: false,
         item: {},
       },
       lastMonth: {
         isError: false,
         errorMessage: '',
-        exist: true,
+        exist: false,
         item: {},
       },
     },
@@ -40,11 +40,14 @@ export const handler = async (event) => {
 
   try {
     switch (event.routeKey) {
-      case 'GET /elegaku-statistics/init/{ym}':
+      case 'GET /statistics/init/{ym}':
         body = await getAttendanceInformation(event, body);
         body = await getAttendanceInformationMonth(event, body);
         body = await getattendanceInformationMonthTotal(event, true, body);
         body = await getattendanceInformationMonthTotal(event, false, body);
+        break;
+      case 'GET /statistics/girl/init/{ym}':
+        body = { message: 'ok' };
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
@@ -120,15 +123,18 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
     const result = await dynamo.get(params).promise();
 
     // 取得結果を設定
-    if (isCurrent) {
-      body.attendanceInformationMonthTotal.currentMonth.exist = false;
-    } else {
-      body.attendanceInformationMonthTotal.lastMonth.exist = false;
-    }
-    if (isCurrent) {
-      body.attendanceInformationMonthTotal.currentMonth.item = result.Item;
-    } else {
-      body.attendanceInformationMonthTotal.lastMonth.item = result.Item;
+    // オブジェクトの空チェック
+    if (Object.keys(result).length !== 0) {
+      if (isCurrent) {
+        body.attendanceInformationMonthTotal.currentMonth.exist = true;
+      } else {
+        body.attendanceInformationMonthTotal.lastMonth.exist = true;
+      }
+      if (isCurrent) {
+        body.attendanceInformationMonthTotal.currentMonth.item = result.Item;
+      } else {
+        body.attendanceInformationMonthTotal.lastMonth.item = result.Item;
+      }
     }
   } catch (err) {
     if (isCurrent) {
@@ -145,6 +151,7 @@ const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
 
 // 前月取得
 const getBeforeMonth = (ym) => {
-  const date = new Date(ym.split('-')[0], ym.split('-')[1] - 1, 1);
-  return `${date.getFullYear()}-${date.getMonth()}`;
+  const date = new Date(ym.split('-')[0], ym.split('-')[1], 1);
+  date.setMonth(date.getMonth() - 2);
+  return `${date.getFullYear()}-${date.getMonth() + 1}`;
 };
