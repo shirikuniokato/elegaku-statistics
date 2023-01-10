@@ -38,6 +38,7 @@ export const handler = async (event) => {
     },
   };
 
+  console.log('start');
   try {
     switch (event.routeKey) {
       case 'GET /statistics/init/{ym}':
@@ -46,13 +47,14 @@ export const handler = async (event) => {
         body = await getattendanceInformationMonthTotal(event, true, body);
         body = await getattendanceInformationMonthTotal(event, false, body);
         break;
-      case 'GET /statistics/girl/init/{ym}':
-        body = { message: 'ok' };
+      case 'GET /statistics/girl/init/{ym}/{id}':
+        body = await getGirlAttendanceInformation(event, body);
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
     }
   } catch (err) {
+    console.log(err);
     statusCode = 400;
     body = err.message;
   } finally {
@@ -154,4 +156,28 @@ const getBeforeMonth = (ym) => {
   const date = new Date(ym.split('-')[0], ym.split('-')[1], 1);
   date.setMonth(date.getMonth() - 2);
   return `${date.getFullYear()}-${date.getMonth() + 1}`;
+};
+
+// 月の出勤情報取得
+const getGirlAttendanceInformation = async (event, body) => {
+  try {
+    // データ取得
+    const result = await dynamo
+      .scan({
+        TableName: 'attendance-information',
+        FilterExpression: 'begins_with(#d, :ym) and id = :id',
+        ExpressionAttributeNames: { '#d': 'date' },
+        ExpressionAttributeValues: { ':ym': event.pathParameters.ym, ':id': event.pathParameters.id },
+      })
+      .promise();
+
+    // 取得結果を設定
+    body.attendanceInformation.items = result.Items;
+    body.attendanceInformation.count = result.Count;
+  } catch (err) {
+    body.attendanceInformation.isError = true;
+    body.attendanceInformation.errorMessage = err.message;
+  } finally {
+    return body;
+  }
 };

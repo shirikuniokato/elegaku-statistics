@@ -28,7 +28,7 @@ const MonthCompare = (props) => {
   let timePercent = 0;
   let timeResult = 0;
 
-  if (true) {
+  if (current.exist && last.exist) {
     dayPercent = roundDecimal(((current.item.attendanceDays - last.item.attendanceDays) / last.item.attendanceDays) * 100, 2);
     dayResult = current.item.attendanceDays >= last.item.attendanceDays;
     timePercent = roundDecimal(((current.item.attendanceTime - last.item.attendanceTime) / last.item.attendanceTime) * 100, 2);

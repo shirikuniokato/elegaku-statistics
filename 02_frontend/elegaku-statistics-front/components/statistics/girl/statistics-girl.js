@@ -6,14 +6,16 @@ import { Box } from '@chakra-ui/react';
 import GirlList from './girl-select';
 import GirlInfo from './girl-info';
 import MonthCompare from '../common/month-compare';
+import Line from '../../common/line';
 
 import axios from 'axios';
 
 const StatisticsGirl = () => {
   const [id, setId] = useState('');
   const [girls, setGirls] = useState([]);
-  const [attendanceInformationMonth, setAttendanceInformationMonth] = useState({});
-  const [attendanceInformationMonthLast, setAttendanceInformationMonthLast] = useState({});
+  const [attendanceInformation, setAttendanceInformation] = useState({});
+  // const [attendanceInformationMonth, setAttendanceInformationMonth] = useState({});
+  // const [attendanceInformationMonthLast, setAttendanceInformationMonthLast] = useState({});
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -38,11 +40,8 @@ const StatisticsGirl = () => {
     const request = async () => {
       const date = new Date();
       const ym = `${date.getFullYear()}-${date.getMonth() + 1}`;
-      const last = `${date.getFullYear()}-${date.getMonth()}`;
-      const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${ym}/${id}`);
-      setAttendanceInformationMonth(responseMonth.data.Items[0]);
-      const responseMonthLast = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/attendance-information-month/${last}/${id}`);
-      setAttendanceInformationMonthLast(responseMonthLast.data.Items[0]);
+      const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/girl/init/${ym}/${id}`);
+      setAttendanceInformation(responseMonth.data.attendanceInformation);
     };
     request();
 
@@ -57,7 +56,9 @@ const StatisticsGirl = () => {
       <Box m={8} />
       <GirlInfo id={id} girls={girls} />
       {id === '' ? null : <Box mt={8}></Box>}
-      {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />}
+      <Line />
+      {id === '' ? null : <Box mt={8}></Box>}
+      {/* {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />} */}
     </>
   );
 };

@@ -41,7 +41,6 @@ const Statistics = () => {
         setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth);
         setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth);
       } catch (err) {
-        console.log(err);
         setIsError(true);
       }
       // ロード完了
@@ -65,8 +64,6 @@ const Statistics = () => {
         setAttendanceInformationMonth(response.data.attendanceInformationMonth);
         setAttendanceInformationMonthTotal(response.data.attendanceInformationMonthTotal.currentMonth);
         setAttendanceInformationMonthTotalLast(response.data.attendanceInformationMonthTotal.lastMonth);
-        console.log(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/init/${ym}`);
-        console.log(response.data);
       } catch (err) {
         // エラー発生
         setIsError(true);
@@ -93,7 +90,7 @@ const Statistics = () => {
             <Box mt={12}></Box>
             <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonthTotal} attendancesMonthTotalLast={attendanceInformationMonthTotalLast} />
             <Box mt={12} />
-            {/* <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} /> */}
+            <Rank isLoaded={isLoaded} attendancesMonth={attendanceInformationMonth} />
           </Box>
         )}
       </Box>
