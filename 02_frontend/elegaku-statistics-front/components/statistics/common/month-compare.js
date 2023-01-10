@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Box, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup, Skeleton } from '@chakra-ui/react';
+import { Text, Box, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, StatGroup, Skeleton } from '@chakra-ui/react';
 
 import Title from '../../common/item-title';
 
@@ -21,33 +21,49 @@ const roundDecimal = (value, n) => {
 };
 
 const MonthCompare = (props) => {
-  const dayPercent = roundDecimal(((props.attendancesMonthTotal.attendanceDays - props.attendancesMonthTotalLast.attendanceDays) / props.attendancesMonthTotalLast.attendanceDays) * 100, 2);
-  const dayResult = props.attendancesMonthTotal.attendanceDays >= props.attendancesMonthTotalLast.attendanceDays;
+  const current = props.attendancesMonthTotal;
+  const last = props.attendancesMonthTotalLast;
+  let dayPercent = 0;
+  let dayResult = 0;
+  let timePercent = 0;
+  let timeResult = 0;
 
-  const timePercent = roundDecimal(((props.attendancesMonthTotal.attendanceTime - props.attendancesMonthTotalLast.attendanceTime) / props.attendancesMonthTotalLast.attendanceTime) * 100, 2);
-  const timeResult = props.attendancesMonthTotal.attendanceTime >= props.attendancesMonthTotalLast.attendanceTime;
+  if (true) {
+    dayPercent = roundDecimal(((current.item.attendanceDays - last.item.attendanceDays) / last.item.attendanceDays) * 100, 2);
+    dayResult = current.item.attendanceDays >= last.item.attendanceDays;
+    timePercent = roundDecimal(((current.item.attendanceTime - last.item.attendanceTime) / last.item.attendanceTime) * 100, 2);
+    timeResult = current.item.attendanceTime >= last.item.attendanceTime;
+  }
 
   return (
     <Box>
       <Title title="前月比" />
-      <StatGroup>
-        <Stat>
-          <StatLabel>出勤日数</StatLabel>
+      {current.exist ? (
+        <StatGroup>
+          <Stat>
+            <StatLabel>出勤日数</StatLabel>
 
-          <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
-            <StatNumber>{`${props.attendancesMonthTotal.attendanceDays}日`}</StatNumber>
-            {CompareResult(dayPercent, dayResult)}
-          </Skeleton>
-        </Stat>
+            <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+              <StatNumber>{`${current.item.attendanceDays}日`}</StatNumber>
+              {CompareResult(dayPercent, dayResult)}
+            </Skeleton>
+          </Stat>
 
-        <Stat>
-          <StatLabel>出勤時間</StatLabel>
-          <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
-            <StatNumber>{`${props.attendancesMonthTotal.attendanceTime}時間`}</StatNumber>
-            {CompareResult(timePercent, timeResult)}
-          </Skeleton>
-        </Stat>
-      </StatGroup>
+          <Stat>
+            <StatLabel>出勤時間</StatLabel>
+            <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+              <StatNumber>{`${current.item.attendanceTime}時間`}</StatNumber>
+              {CompareResult(timePercent, timeResult)}
+            </Skeleton>
+          </Stat>
+        </StatGroup>
+      ) : (
+        <Skeleton isLoaded={props.isLoaded}>
+          <Text w="350px" h="350px">
+            データが存在しません。
+          </Text>
+        </Skeleton>
+      )}
     </Box>
   );
 };

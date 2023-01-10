@@ -1,5 +1,5 @@
 {
-  "name": "get-attendance-information-month-total",
+  "name": "batch-update-notification",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1282.0"
+    "aws-sdk": "^2.1287.0",
+    "axios": "^1.2.2",
+    "cheerio": "^1.0.0-rc.12"
   }
 }

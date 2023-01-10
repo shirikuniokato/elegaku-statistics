@@ -61,7 +61,7 @@ const explanation = () => {
               </CardHeader>
               <CardBody>
                 <Text>
-                  お好きな生徒を通知登録することで、Twitterにて常に最新の出勤情報が通知されます。
+                  お気に入りの生徒を通知登録することで、Twitterにて常に最新の出勤情報が通知されます。
                   <br />
                   <br />
                   注意点：Twitterへのログインが必要となります。
