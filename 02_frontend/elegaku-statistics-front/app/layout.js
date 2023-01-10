@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
           <TopButton />
           <Footer />
         </ChakraProvider>
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2514395691765655" crossorigin="anonymous">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2514395691765655" crossOrigin="anonymous">
           <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-2514395691765655" data-ad-slot="9179084232"></ins>
           (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
