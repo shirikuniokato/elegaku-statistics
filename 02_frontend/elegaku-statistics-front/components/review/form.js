@@ -15,66 +15,12 @@ import { ImStarEmpty, ImStarHalf, ImStarFull } from 'react-icons/im';
 import Title from '../common/item-title';
 import GirlList from '../statistics/girl/girl-select';
 
-const marks = () => {
-  return (
-    <>
-      <SliderMark value={10} mt="1" ml="-2.5" fontSize="sm">
-        10点
-      </SliderMark>
-      <SliderMark value={30} mt="1" ml="-2.5" fontSize="sm">
-        30点
-      </SliderMark>
-      <SliderMark value={50} mt="1" ml="-2.5" fontSize="sm">
-        50点
-      </SliderMark>
-      <SliderMark value={70} mt="1" ml="-2.5" fontSize="sm">
-        70点
-      </SliderMark>
-      <SliderMark value={90} mt="1" ml="-2.5" fontSize="sm">
-        90点
-      </SliderMark>
-    </>
-  );
-};
-
-const stars = (score) => {
-  const result = [];
-
-  const isZero = score === 0.0;
-  const isFive = score === 5.0;
-  const isFloat = !Number.isInteger(score);
-
-  for (let i = 0; i < 5; i++) {
-    const target = i + 1;
-
-    if (isZero) {
-      result.push(<Icon as={ImStarEmpty} key={i} color="#df9b56" bg="" w={12} h={12} />);
-      continue;
-    }
-    if (isFive) {
-      result.push(<Icon as={ImStarFull} key={i} color="#df9b56" bg="" w={12} h={12} />);
-      continue;
-    }
-
-    if (target <= Math.floor(score)) {
-      result.push(<Icon as={ImStarFull} key={i} color="#df9b56" bg="" w={12} h={12} />);
-      continue;
-    }
-
-    if (target === Math.ceil(score) && isFloat) {
-      result.push(<Icon as={ImStarHalf} key={i} color="#df9b56" bg="" w={12} h={12} />);
-    } else if (target > score) {
-      result.push(<Icon as={ImStarEmpty} key={i} color="#df9b56" bg="" w={12} h={12} />);
-    }
-  }
-  return result;
-};
-
 const Form = (props) => {
   // 対象生徒
   const [id, setId] = useState('');
   const [girl, setGirl] = useState({});
   const [isSelected, setIsSelected] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
 
   // フォーム入力値
   // yyyy-mm-dd形式に変換（訪問時のDefaultに使用）
@@ -122,6 +68,9 @@ const Form = (props) => {
       contents: contents,
     };
     const request = async () => {
+      // ロード中（投稿ボタン）
+      setIsLoaded(false);
+
       try {
         await axios.post('https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/review/add', data);
       } catch (error) {
@@ -139,6 +88,11 @@ const Form = (props) => {
       });
       props.onClose();
       initializeForm();
+      setId('');
+      setIsSelected(false);
+
+      // ロード完了（投稿ボタン）
+      setIsLoaded(true);
     };
     request();
   };
@@ -351,9 +305,15 @@ const Form = (props) => {
           <Divider />
 
           <ModalFooter>
-            <Button colorScheme="teal" mr={3} onClick={submit}>
-              投稿
-            </Button>
+            {isLoaded ? (
+              <Button colorScheme="teal" mr={3} onClick={submit}>
+                投稿
+              </Button>
+            ) : (
+              <Button isLoading colorScheme="teal" mr={3}>
+                投稿
+              </Button>
+            )}
             <Button
               onClick={() => {
                 props.onClose();
@@ -372,3 +332,58 @@ const Form = (props) => {
 };
 
 export default Form;
+
+const marks = () => {
+  return (
+    <>
+      <SliderMark value={10} mt="1" ml="-2.5" fontSize="sm">
+        10点
+      </SliderMark>
+      <SliderMark value={30} mt="1" ml="-2.5" fontSize="sm">
+        30点
+      </SliderMark>
+      <SliderMark value={50} mt="1" ml="-2.5" fontSize="sm">
+        50点
+      </SliderMark>
+      <SliderMark value={70} mt="1" ml="-2.5" fontSize="sm">
+        70点
+      </SliderMark>
+      <SliderMark value={90} mt="1" ml="-2.5" fontSize="sm">
+        90点
+      </SliderMark>
+    </>
+  );
+};
+
+const stars = (score) => {
+  const result = [];
+
+  const isZero = score === 0.0;
+  const isFive = score === 5.0;
+  const isFloat = !Number.isInteger(score);
+
+  for (let i = 0; i < 5; i++) {
+    const target = i + 1;
+
+    if (isZero) {
+      result.push(<Icon as={ImStarEmpty} key={i} color="#df9b56" bg="" w={12} h={12} />);
+      continue;
+    }
+    if (isFive) {
+      result.push(<Icon as={ImStarFull} key={i} color="#df9b56" bg="" w={12} h={12} />);
+      continue;
+    }
+
+    if (target <= Math.floor(score)) {
+      result.push(<Icon as={ImStarFull} key={i} color="#df9b56" bg="" w={12} h={12} />);
+      continue;
+    }
+
+    if (target === Math.ceil(score) && isFloat) {
+      result.push(<Icon as={ImStarHalf} key={i} color="#df9b56" bg="" w={12} h={12} />);
+    } else if (target > score) {
+      result.push(<Icon as={ImStarEmpty} key={i} color="#df9b56" bg="" w={12} h={12} />);
+    }
+  }
+  return result;
+};

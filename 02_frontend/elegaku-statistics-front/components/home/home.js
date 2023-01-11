@@ -124,7 +124,7 @@ const access = () => {
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3246.8120276037002!2d139.70369761559508!3d35.53364258022893!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6018609604c2d57d%3A0x1f4c0cfdc5646c91!2z44CSMjEwLTAwMDMg56We5aWI5bed55yM5bed5bSO5biC5bed5bSO5Yy65aCA5LmL5YaF55S677yX4oiS77yY!5e0!3m2!1sja!2sjp!4v1672430458804!5m2!1sja!2sjp"
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
+                referrerPolicy="no-referrer-when-downgrade"
               ></iframe>
             </AspectRatio>
           </CardBody>
