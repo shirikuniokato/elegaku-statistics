@@ -13,11 +13,6 @@ export default function Page() {
   return (
     <>
       <PageTitle title="統計" />
-      {/* <Box h="8vh">
-        <Text fontSize="1em" textAlign="center">
-          作成中です。しばらくお待ちください
-        </Text>
-      </Box> */}
       <Tabs isFitted variant="line" colorScheme="cyan">
         <TabList>
           <Tab>全体</Tab>

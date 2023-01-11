@@ -10,12 +10,14 @@ import Line from '../../common/line';
 
 import axios from 'axios';
 
+import Calendar from '../../common/calendar/calendar';
+
 const StatisticsGirl = () => {
   const [id, setId] = useState('');
   const [girls, setGirls] = useState([]);
-  const [attendanceInformation, setAttendanceInformation] = useState({});
-  // const [attendanceInformationMonth, setAttendanceInformationMonth] = useState({});
-  // const [attendanceInformationMonthLast, setAttendanceInformationMonthLast] = useState({});
+  const [attendanceInformation, setAttendanceInformation] = useState({ count: 0, items: [] });
+  const [attendanceInformationMonth, setAttendanceInformationMonth] = useState({});
+  const [attendanceInformationMonthLast, setAttendanceInformationMonthLast] = useState({});
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -40,8 +42,10 @@ const StatisticsGirl = () => {
     const request = async () => {
       const date = new Date();
       const ym = `${date.getFullYear()}-${date.getMonth() + 1}`;
-      const responseMonth = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/girl/init/${ym}/${id}`);
-      setAttendanceInformation(responseMonth.data.attendanceInformation);
+      const response = await axios.get(`https://9in4ev8es3.execute-api.ap-northeast-1.amazonaws.com/statistics/girl/init/${ym}/${id}`);
+      setAttendanceInformation(response.data.attendanceInformation);
+      setAttendanceInformationMonth(response.data.attendanceInformationMonthTotal.currentMonth);
+      setAttendanceInformationMonthLast(response.data.attendanceInformationMonthTotal.lastMonth);
     };
     request();
 
@@ -55,10 +59,13 @@ const StatisticsGirl = () => {
       <GirlList setId={setId} girls={girls} isLoaded={isLoaded} />
       <Box m={8} />
       <GirlInfo id={id} girls={girls} />
+      <Box m={4} />
+
+      {id === '' ? null : <Calendar attendanceInformation={attendanceInformation} />}
       {id === '' ? null : <Box mt={8}></Box>}
       <Line />
       {id === '' ? null : <Box mt={8}></Box>}
-      {/* {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />} */}
+      {id === '' ? null : <MonthCompare isLoaded={isLoaded} attendancesMonthTotal={attendanceInformationMonth} attendancesMonthTotalLast={attendanceInformationMonthLast} />}
     </>
   );
 };

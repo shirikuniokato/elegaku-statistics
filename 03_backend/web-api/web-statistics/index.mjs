@@ -44,11 +44,13 @@ export const handler = async (event) => {
       case 'GET /statistics/init/{ym}':
         body = await getAttendanceInformation(event, body);
         body = await getAttendanceInformationMonth(event, body);
-        body = await getattendanceInformationMonthTotal(event, true, body);
-        body = await getattendanceInformationMonthTotal(event, false, body);
+        body = await getAttendanceInformationMonthTotal(event, true, body);
+        body = await getAttendanceInformationMonthTotal(event, false, body);
         break;
       case 'GET /statistics/girl/init/{ym}/{id}':
         body = await getGirlAttendanceInformation(event, body);
+        body = await getGirlAttendanceInformationMonthTotal(event, true, body);
+        body = await getGirlAttendanceInformationMonthTotal(event, false, body);
         break;
       default:
         throw new Error(`Unsupported route: "${event.routeKey}"`);
@@ -114,7 +116,7 @@ const getAttendanceInformationMonth = async (event, body) => {
 };
 
 // 月単位の集計データを取得
-const getattendanceInformationMonthTotal = async (event, isCurrent, body) => {
+const getAttendanceInformationMonthTotal = async (event, isCurrent, body) => {
   try {
     // データ取得
     const targetYm = isCurrent ? event.pathParameters.ym : getBeforeMonth(event.pathParameters.ym);
@@ -177,6 +179,44 @@ const getGirlAttendanceInformation = async (event, body) => {
   } catch (err) {
     body.attendanceInformation.isError = true;
     body.attendanceInformation.errorMessage = err.message;
+  } finally {
+    return body;
+  }
+};
+
+// 月単位の集計データを取得
+const getGirlAttendanceInformationMonthTotal = async (event, isCurrent, body) => {
+  try {
+    // データ取得
+    const targetYm = isCurrent ? event.pathParameters.ym : getBeforeMonth(event.pathParameters.ym);
+    const params = {
+      TableName: 'attendance-information-month',
+      Key: { ym: targetYm, id: event.pathParameters.id },
+    };
+    const result = await dynamo.get(params).promise();
+
+    // 取得結果を設定
+    // オブジェクトの空チェック
+    if (Object.keys(result).length !== 0) {
+      if (isCurrent) {
+        body.attendanceInformationMonthTotal.currentMonth.exist = true;
+      } else {
+        body.attendanceInformationMonthTotal.lastMonth.exist = true;
+      }
+      if (isCurrent) {
+        body.attendanceInformationMonthTotal.currentMonth.item = result.Item;
+      } else {
+        body.attendanceInformationMonthTotal.lastMonth.item = result.Item;
+      }
+    }
+  } catch (err) {
+    if (isCurrent) {
+      body.attendanceInformationMonthTotal.currentMonth.isError = true;
+      body.attendanceInformationMonthTotal.currentMonth.errorMessage = err.message;
+    } else {
+      body.attendanceInformationMonthTotal.lastMonth.isError = true;
+      body.attendanceInformationMonthTotal.lastMonth.errorMessage = err.message;
+    }
   } finally {
     return body;
   }

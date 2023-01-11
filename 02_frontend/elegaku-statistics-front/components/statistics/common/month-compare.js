@@ -58,11 +58,35 @@ const MonthCompare = (props) => {
           </Stat>
         </StatGroup>
       ) : (
-        <Skeleton isLoaded={props.isLoaded}>
-          <Text w="350px" h="350px">
-            データが存在しません。
-          </Text>
-        </Skeleton>
+        <StatGroup>
+          <Stat>
+            <StatLabel>出勤日数</StatLabel>
+
+            <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+              <StatNumber>{`0日`}</StatNumber>
+              <StatHelpText>
+                <StatArrow type="decrease" />
+                0%
+              </StatHelpText>
+            </Skeleton>
+          </Stat>
+
+          <Stat>
+            <StatLabel>出勤時間</StatLabel>
+            <Skeleton width="30vw" height="57px" isLoaded={props.isLoaded}>
+              <StatNumber>{`0時間`}</StatNumber>
+              <StatHelpText>
+                <StatArrow type="decrease" />
+                0%
+              </StatHelpText>
+            </Skeleton>
+          </Stat>
+        </StatGroup>
+        // <Skeleton isLoaded={props.isLoaded}>
+        //   <Text w="350px" h="350px">
+        //     データが存在しません。
+        //   </Text>
+        // </Skeleton>
       )}
     </Box>
   );
